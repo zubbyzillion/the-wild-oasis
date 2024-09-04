@@ -10,3 +10,4 @@ export async function getCabins() {
 
 	return data;
 }
+// https://klaxcklnibrbaycnmuve.supabase.co/storage/v1/object/public/cabin-images/cabin-001.jpg
