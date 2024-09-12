@@ -11,20 +11,28 @@ export async function getCabins() {
 	return data;
 }
 
-export async function deleteCabin(id) {
-	
+export async function createCabin(newCabin) {
 	const { data, error } = await supabase
-		.from('cabins')
-		.delete()
-		.eq("id", id);
+		.from("cabins")
+		.insert([newCabin]);
 
-		if (error) {
-			console.error(error);
-			throw new Error("Cabins could not be deleted");
-		}
+	if (error) {
+		console.error(error);
+		throw new Error("Cabins could not be created");
+	}
 
 	return data;
+}
 
+export async function deleteCabin(id) {
+	const { data, error } = await supabase.from("cabins").delete().eq("id", id);
+
+	if (error) {
+		console.error(error);
+		throw new Error("Cabins could not be deleted");
+	}
+
+	return data;
 }
 
 // https://klaxcklnibrbaycnmuve.supabase.co/storage/v1/object/public/cabin-images/cabin-001.jpg
