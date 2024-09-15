@@ -63,45 +63,36 @@ function CreateCabinForm() {
 	const { register, handleSubmit, reset, getValues, formState } = useForm();
 
 	const { errors } = formState;
-	console.log(errors);
+	// console.log(errors);
 
 	function onSubmit(data) {
-		mutate(data);
+		// console.log(data);
+
+		mutate({ ...data, image: data.image[0] });
 	}
 
 	function onError(errors) {
-		console.log(errors);
+		// console.log(errors);
 	}
 
 	return (
 		<Form onSubmit={handleSubmit(onSubmit, onError)}>
-			<FormRow2>
-				<Label htmlFor="name">Cabin name</Label>
-				<Input
-					type="text"
-					id="name"
-					{...register("name", {
-						required: "This field is required",
-					})}
-				/>
-				{errors?.name?.message && <Error>{errors.name.message}</Error>}
-			</FormRow2>
-
 			<FormRow label="Cabin name" error={errors?.name?.message}>
 				<Input
 					type="text"
 					id="name"
+					disable={isCreating}
 					{...register("name", {
 						required: "This field is required",
 					})}
 				/>
 			</FormRow>
 
-			<FormRow2>
-				<Label htmlFor="maxCapacity">Maximum capacity</Label>
+			<FormRow label="Maximum Capacity" error={errors?.maxCapacity?.message}>
 				<Input
 					type="number"
 					id="maxCapacity"
+					disable={isCreating}
 					{...register("maxCapacity", {
 						required: "This field is required",
 						min: {
@@ -110,13 +101,13 @@ function CreateCabinForm() {
 						},
 					})}
 				/>
-			</FormRow2>
+			</FormRow>
 
-			<FormRow2>
-				<Label htmlFor="regularPrice">Regular price</Label>
+			<FormRow label="Regular price" error={errors?.regularPrice?.message}>
 				<Input
 					type="number"
 					id="regularPrice"
+					disable={isCreating}
 					{...register("regularPrice", {
 						required: "This field is required",
 						min: {
@@ -125,13 +116,13 @@ function CreateCabinForm() {
 						},
 					})}
 				/>
-			</FormRow2>
+			</FormRow>
 
-			<FormRow2>
-				<Label htmlFor="discount">Discount</Label>
+			<FormRow label="Discount" error={errors?.discount?.message}>
 				<Input
 					type="number"
 					id="discount"
+					disable={isCreating}
 					defaultValue={0}
 					{...register("discount", {
 						required: "This field is required",
@@ -140,32 +131,38 @@ function CreateCabinForm() {
 							"Discount should be less than regular price",
 					})}
 				/>
-			</FormRow2>
+			</FormRow>
 
-			<FormRow2>
-				<Label htmlFor="description">Description for website</Label>
+			<FormRow label="Description" error={errors?.description?.message}>
 				<Textarea
 					type="number"
 					id="description"
+					disable={isCreating}
 					defaultValue=""
 					{...register("description", {
 						required: "This field is required",
 					})}
 				/>
-			</FormRow2>
+			</FormRow>
 
-			<FormRow2>
+			<FormRow label="Cabin photo">
 				<Label htmlFor="image">Cabin photo</Label>
-				<FileInput id="image" accept="image/*" />
-			</FormRow2>
+				<FileInput
+					id="image"
+					accept="image/*"
+					{...register("image", {
+						required: "This field is required",
+					})}
+				/>
+			</FormRow>
 
-			<FormRow2>
+			<FormRow>
 				{/* type is an HTML attribute! */}
 				<Button variation="secondary" type="reset">
 					Cancel
 				</Button>
 				<Button disabled={isCreating}>Edit cabin</Button>
-			</FormRow2>
+			</FormRow>
 		</Form>
 	);
 }
