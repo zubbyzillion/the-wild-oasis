@@ -11,14 +11,7 @@ import FormRow from "../../ui/FormRow";
 import { useForm } from "react-hook-form";
 import { createCabin } from "../../services/apiCabins";
 
-function CreateCabinForm({ cabinToEdit = {} }) {
-	const { id: editId, ...editValues } = cabinToEdit;
-	const isEditSession = Boolean(editId);
-	
-	const { register, handleSubmit, reset, getValues, formState } = useForm({
-		defaultValues: isEditSession ? editValues : {},
-	});
-	
+function CreateCabinForm() {
 	const queryClient = useQueryClient();
 
 	const { mutate, isLoading: isCreating } = useMutation({
@@ -31,6 +24,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 		onError: (err) => toast.error(err.message),
 	});
 
+	const { register, handleSubmit, reset, getValues, formState } = useForm();
 
 	const { errors } = formState;
 	// console.log(errors);
@@ -116,7 +110,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 			</FormRow>
 
 			<FormRow label="Cabin photo">
-				{/* <Label htmlFor="image">Cabin photo</Label> */}
+				<Label htmlFor="image">Cabin photo</Label>
 				<FileInput
 					id="image"
 					accept="image/*"
