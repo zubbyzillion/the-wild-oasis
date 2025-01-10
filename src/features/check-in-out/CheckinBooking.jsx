@@ -12,7 +12,8 @@ import Checkbox from "../../ui/Checkbox";
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { useBooking } from "../bookings/useBooking";
 import { useEffect, useState } from "react";
-import useCheckin from "./useCheckin";
+import { useCheckin } from "./useCheckin";
+import { formatCurrency } from "../../utils/helpers";
 
 const Box = styled.div`
   /* Box */
@@ -26,7 +27,7 @@ function CheckinBooking() {
   const [confirmPaid, setConfirmPaid] = useState(false);
   const { booking, isLoading } = useBooking();
 
-  useEffect(() => setConfirmPaid(booking?.isPaid || false), [booking])
+  useEffect(() => setConfirmPaid(booking?.isPaid ?? false), [booking])
 
   const moveBack = useMoveBack();
   const {checkin, isCheckingIn} = useCheckin();
@@ -44,7 +45,7 @@ function CheckinBooking() {
 
   function handleCheckin() {
     if (!confirmPaid) return;
-    checkin(bookingId);
+    checkin({bookingId});
   }
 
   return (
