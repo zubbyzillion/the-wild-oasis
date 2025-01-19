@@ -6,7 +6,8 @@ export async function getBookings({ filter, sortBy, page }) {
 	let query = supabase
 		.from("bookings")
 		.select(
-			"id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice,  cabins(name), guests(fullName, email)", { count: "exact" }
+			"id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice,  cabins(name), guests(fullName, email)",
+			{ count: "exact" },
 		);
 	// FILTER
 	if (filter) query = query[filter.method || "eq"](filter.field, filter.value);
@@ -18,7 +19,10 @@ export async function getBookings({ filter, sortBy, page }) {
 	}
 
 	// SORT
-	if (sortBy) query = query.order(sortBy.field, {ascending: sortBy.direction === "asc", });
+	if (sortBy)
+		query = query.order(sortBy.field, {
+			ascending: sortBy.direction === "asc",
+		});
 
 	const { data, error, count } = await query;
 
