@@ -43,5 +43,34 @@ export async function getCurrentUser() {
 
 export async function logout() {
   const { error } = await supabase.auth.signOut();
-  if(error) throw new Error(error.message);
+  if (error) throw new Error(error.message);
+}
+
+export async function updateCurrentUser({ password, fullName, avatar }) {
+  //1. Update password OR fullName
+  let updateData;
+  if (password) updateData = { password };
+  if (fullName) updateData = { data: { fullName }};
+
+  const { data, error } = await supabase.auth.updateUser();
+
+  if (error) throw new Error(error.message);
+  if (!avatar) return data;
+
+  //2. Upload the avatar image
+  const fileName = `avatar-${data.user.id}-$(Math.rand0m())`;
+
+  const { error: storageError } = await supabase.storage.from('avatars').upload(fileName, avatar);
+
+  if (storageError) throw new Error(storageError.message);
+
+  //3. Update avatar in the user
+  const { data: updatedUser, error: error2 } = supabase.auth.updateUser({
+    data: {
+      avatar: `https://klaxcklnibrbaycnmuve.supabase.co/storage/v1/object/public/avatars/${fileName}`,
+    },
+  });
+
+  if ( error2 ) throw new Error(error2.message);
+  return updatedUser;
 }
