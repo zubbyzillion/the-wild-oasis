@@ -10,6 +10,7 @@ import {
 	XAxis,
 	YAxis,
 } from "recharts";
+import { useDarkMode } from "../../context/DarkModeContext";
 import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
 
 const StyledSalesChart = styled(DashboardBox)`
@@ -55,7 +56,7 @@ const fakeData = [
 ];
 
 function SalesChart({ bookings, numDays }) {
-	const isDarkMode = true;
+	const { isDarkMode } = useDarkMode();
 
 	const allDates = eachDayOfInterval({
 		start: subDays(new Date(), numDays - 1),
